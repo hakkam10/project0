@@ -1,4 +1,15 @@
 h1{
   text-align: center;
-  color: #54316b;
+  color: white;
+  font-size: 40px;
+}
+#heading{
+  background-color: #4b315c;
+  padding-left: auto;
+  padding-right: auto;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+#title{
+  color: "white";
 }
