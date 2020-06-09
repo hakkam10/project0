@@ -10,6 +10,33 @@ h1{
   padding-top: 20px;
   padding-bottom: 20px;
 }
-#title{
-  color: "white";
+@media (max-width: 576px) {
+  #heading>p {
+    display: none;
+  }
+}
+#heading>p {
+  color: white;
+  text-align: center;
+}
+.pic {
+  width: 200px;
+  height: 250px;
+  float: right;
+  margin: 10px
+}
+.col-sm-3 {
+  text-align: center;
+}
+#SC {
+  table-layout: auto;
+  width: 500px;
+}
+.APGsystems>h6::before{
+  content: "\27A4"
+}
+
+p::selection{
+  color: white;
+  background-color: #c779d9;
 }
