@@ -1,0 +1,30 @@
+.APGsystems {
+  padding-left: 16px; }
+  .APGsystems h6 {
+    color: #8421b0;
+    font-size: 16px; }
+  .APGsystems li {
+    font-size: 14px; }
+
+.footer, #f1, #f2 {
+  font-family: sans-serif;
+  font-size: 16px;
+  padding-left: 20px; }
+
+.footer {
+  background-color: #c5b1c7;
+  padding: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px; }
+
+#f1 {
+  background-color: #c25d8d;
+  margin-left: 10px;
+  margin-right: 500px; }
+
+#f2 {
+  background-color: #de237c;
+  margin-left: 10px;
+  margin-right: 500px; }
+
+/*# sourceMappingURL=stylesheet2.css.map */
