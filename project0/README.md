@@ -4,7 +4,7 @@ Web Programming with Python and JavaScript
 
 This website is a collection of plant descriptions for a few species of plants along with a brief introduction to the history of classification of plants.
 
-You can navigate to all the available plant species using the navigation bar. The contents bar shows and takes you to the different sections of the webpage. You can return to the homepage by clicking at the title "All about plants" at the top.
+You can navigate to all the available plant species in this website using the navigation bar. The contents bar shows and takes you to the different sections of the webpage. You can return to the homepage by clicking at the title "All about plants" at the top.
 
 The subheading disappears when the width of the screen is adjusted to mobile screen width.
 
