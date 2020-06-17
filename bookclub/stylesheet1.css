@@ -9,7 +9,8 @@ h1{
   padding-bottom: 20px;
 }
 
-.col-sm-3{
+.col-sm-4{
   padding-top: 20px;
   padding-bottom: 20px;
+  text-align: right;
 }
