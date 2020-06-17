@@ -1,5 +1,15 @@
 h1{
-  text-align: center;
   color: white;
   font-size: 40px;
+}
+
+#heading {
+  background-color: #fc4503;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.col-sm-3{
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
