@@ -3,19 +3,31 @@
 {% block title %}Welcome to Books Club{% endblock %}
 
 {% block body %}
-<div id="welcome">
-  <h1>Get Started</h1>
-</div>
-<div class="container">
+<div class="container p-3 my-3">
+  <div id="welcome"><h1>Get Started!</h1></div>
+
   <div class="row">
-    <div id="login" class="col">
+
+    <div id="login" class="col-sm p-3 mx-3 my-3 rounded">
       <h3>Login</h3>
-
+        <form action="" method="post">
+            <input class="form-control my-3" type="text" name="username" placeholder="Username">
+            <input class="form-control my-3" type="password" name="password" placeholder="Password">
+            <button type="submit" class="btn btn-danger">Login</button>
+        </form>
     </div>
-    <div id="login" class="col">
+
+    <div id="signup" class="col-sm p-3 mx-3 my-3 rounded">
       <h3>Sign up</h3>
+        <form class="" action="" method="post">
+              <input class="form-control my-3" type="text" name="name" placeholder="Full name">
+              <input class="form-control my-3" type="text" name="username" placeholder="Username">
+              <input class="form-control my-3" type="password" name="password" placeholder="Password">
+              <button type="submit" class="btn btn-danger">Signup</button>
+        </form>
 
     </div>
+
   </div>
 </div>
 

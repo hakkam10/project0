@@ -1,0 +1,20 @@
+$color: #fcbda7;
+
+%welcome {
+    background-color: $color;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#login, #signup, {
+  @extend %welcome;
+  background-color: #fcbda7;
+  h3 {
+    text-align: center;
+  }
+}
+#welcome {
+  h1 {
+    text-align: center;
+  }
+}
