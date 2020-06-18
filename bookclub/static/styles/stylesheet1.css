@@ -1,0 +1,22 @@
+h1{
+  color: white;
+  font-size: 40px;
+}
+
+#heading {
+  background-color: #fc4503;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+#subhead {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  #subhead {
+    display: none;
+  }
+}
