@@ -9,8 +9,14 @@ h1{
   padding-bottom: 20px;
 }
 
-.col-sm-4{
+#subhead {
   padding-top: 20px;
   padding-bottom: 20px;
   text-align: right;
+}
+
+@media (max-width: 768px) {
+  #subhead {
+    display: none;
+  }
 }
