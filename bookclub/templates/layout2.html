@@ -20,18 +20,20 @@
           </div>
         </div>
       </div>
-      <nav class="navbar">
+      <nav class="navbar justify-content-between">
         <div class="container">
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-danger my-2 my-sm-0" type="submit">Search</button>
-        </form>
+              <form class="form-inline my-2 my-lg-0">
+                <input id="search" class="form-control mr-3" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-danger my-2 my-sm-0 " type="submit">Search</button>
+              </form>
         <button class="btn btn-danger my-2 my-sm-0" type="submit">Logout</button>
       </div>
       </nav>
       <div id="body">
-        {% block body %}
-        {% endblock %}
+        <div class="container p-3 my-3">
+          {% block body %}
+          {% endblock %}
+        </div>
       </div>
       <div id="script">
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
