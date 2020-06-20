@@ -20,8 +20,12 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
-@app.route("/")
+@app.route("/", methods = ["GET", "POST"])
 def index():
+    if 'username' in session:
+        session.pop('username',None)
+        return render_template("index.html")
+
     return render_template("index.html")
 
 @app.route("/registered", methods=["POST"])
@@ -47,14 +51,15 @@ def search():
     # get login information
     username = request.form.get("username")
     password = request.form.get("password")
-    user_id = db.execute("SELECT user_id FROM users WHERE (username = :username) AND (password = :password)",
+    name = db.execute("SELECT name FROM users WHERE (username = :username) AND (password = :password)",
                         {"username": username, "password": password})
     # invalid
-    if db.execute("SELECT user_id FROM users WHERE (username = :username) AND (password = :password)", {"username": username, "password": password}).rowcount == 0:
+    if db.execute("SELECT * FROM users WHERE (username = :username) AND (password = :password)", {"username": username, "password": password}).rowcount == 0:
         return render_template("error.html", message="Invalid username or password")
-    #valid    
-    if db.execute("SELECT user_id FROM users WHERE (username = :username) AND (password = :password)", {"username": username, "password": password}).rowcount == 1:
-        return render_template("search.html", name=user_id)
+    #valid
+    if db.execute("SELECT * FROM users WHERE (username = :username) AND (password = :password)", {"username": username, "password": password}).rowcount == 1:
+        session["username"] = [username]
+        return render_template("search.html", name=name)
 
 @app.route("/book")
 def book():
