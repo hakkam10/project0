@@ -3,20 +3,24 @@
 {% block title %}Desolate{% endblock %}
 
 {% block body %}
-<h2 style="font-size: 50px; color: #dc3545;">Desolate</h2>
-<h5 style="font-size: 20px;">By Aquarian unicorn</h5>
-<h6>Year puplished: 2015</h6>
-<h6>ISBN: 9374739029348</h6>
+<h2 style="font-size: 50px; color: #dc3545;">{{ books1.author }}</h2>
+<h5 style="font-size: 20px;">By {{ books1.author }}</h5>
+<h6>Year puplished: {{ books1.published_year }}</h6>
+<h6>ISBN: {{ books1.isbn }}</h6>
 <h6 style="padding-top: 20px">Reviews:</h6>
-<p>3.5 <span>&#8226;</span>
- 9,269 ratings <span>&#8226;</span>
- 1233 reviews</p>
+<p>{ average_rating } <span>&#8226;</span>
+ { work_ratings_count } ratings</p>
 <form class="comment form-inline my-2 my-lg-0" action="index.html" method="post">
   <input type="text" class="form-control my-3 mr-3" style="width: 75%" name="reveiw" value="" placeholder="Write your review">
   <button class="btn btn-danger my-3" type="submit" name="button">Submit</button>
 </form>
-<p><b>Melankalia</b></p>
-<p>I cannot understand what everyone sees in this book. I was expecting "Thelma & Louise" plus zombies, and that's...sorta...where it started, but it just got worse and worse as it went along. To begin with, the (somewhat) interesting action scenes did not in any way make up for having to hear about everyone's feelings every three seconds. About halfway through the book, I felt like I'd gone from "Thelma & Louise" + zombies, to "The View" + zombies. I think if it had been written in first person</p>
-<p><b>Rhiannon Frater</b></p>
-<p>I wrote this novel, so I've read it more times than I care to count. I think I almost have it memorized. :)</p>
-{% endblock %}
+
+<table class="table">
+{% for rating in ratings %}
+<tr>
+<td>
+<p><b>{ username }</b></p>
+<p>{ review }</p>
+</td>
+</tr>
+{% endfor %}

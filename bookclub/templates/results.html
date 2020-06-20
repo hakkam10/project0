@@ -5,17 +5,14 @@
 {% block body %}
 <h3>Results</h3>
 <table class="table">
+  {% for book in book1 %}
   <tr>
-  <td>
-    <h4>Desolate</h4>
-    <p style="padding: 0px;">Aquarianunicorn <span>&#10072;</span> ISBN - 9374739029348 <span>&#10072;</span> <span>&#9733;</span> 3.5</p>
-  </td>
+    <a href="{{ url_for(book), isbn=isbn }}"></a>
+      <td>
+        <h4>{{ name }}</h4>
+        <p style="padding: 0px;">{{ books1.author }} <span>&#10072;</span> ISBN - {{ books1.isbn }} <span>&#10072;</span> <span>&#9733;</span>{{ books2.rating }}</p>
+      </td>
   </tr>
-  <tr>
-  <td>
-    <h4>Harry Potter and the philosopher's stone</h4>
-    <p style="padding: 0px;">J.K. Rowling <span>&#10072;</span> ISBN - 937dahd29348 <span>&#10072;</span> <span>&#9733;</span> 4.5</p>
-  </td>
-  </tr>
+  {% endfor %}
 </table>
 {% endblock %}
