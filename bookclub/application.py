@@ -61,10 +61,15 @@ def search():
         session["username"] = [username]
         return render_template("search.html", name=name)
 
+@app.route("/result", methods=["POST"])
+def results():
+    search = request.form.get("search")
+    # get search keywords
+    books = db.execute("SELECT * FROM books1 WHERE isbn ILIKE :search OR title ILIKE :search OR author ILIKE :search", {"search": search}).fetchall()
+
+    return render_template("results.html", books=books, rating="3.5")
+
+
 @app.route("/book")
 def book():
     return render_template("book.html")
-
-@app.route("/result")
-def result():
-    return render_template("results.html")
