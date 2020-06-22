@@ -1,8 +1,8 @@
 {% extends "layout2.html" %}
 
-{% block title %}{% endblock %}
+{% block title %}Welcome {{ user.name }}{% endblock %}
 
 {% block body %}
-<h1 style="font-size: 50px; text-align: center;">Welcome {{ name }}</h1>
+<h1 style="font-size: 50px; text-align: center;">Welcome {{ user.name }}</h1>
 <h1 style="font-size: 50px; text-align: center;">Search for a Book!</h1>
 {% endblock %}

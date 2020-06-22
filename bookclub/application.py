@@ -51,25 +51,26 @@ def search():
     # get login information
     username = request.form.get("username")
     password = request.form.get("password")
-    name = db.execute("SELECT name FROM users WHERE (username = :username) AND (password = :password)",
-                        {"username": username, "password": password})
     # invalid
     if db.execute("SELECT * FROM users WHERE (username = :username) AND (password = :password)", {"username": username, "password": password}).rowcount == 0:
         return render_template("error.html", message="Invalid username or password")
+
     #valid
+    user = db.execute("SELECT * FROM users WHERE (username = :username) AND (password = :password)", {"username": username, "password": password}).fetchone()
     if db.execute("SELECT * FROM users WHERE (username = :username) AND (password = :password)", {"username": username, "password": password}).rowcount == 1:
-        session["username"] = [username]
-        return render_template("search.html", name=name)
+        session["username"] = username
+        return render_template("search.html", user=user)
 
-@app.route("/result", methods=["POST"])
+@app.route("/results", methods=["POST"])
 def results():
-    search = request.form.get("search")
+    search = "%" + request.form.get("search") + "%"
     # get search keywords
-    books = db.execute("SELECT * FROM books1 WHERE isbn ILIKE :search OR title ILIKE :search OR author ILIKE :search", {"search": search}).fetchall()
+    books = db.execute("SELECT * FROM books1 WHERE (isbn ILIKE :search OR title ILIKE :search OR author ILIKE :search)", {"search": search}).fetchall()
 
-    return render_template("results.html", books=books, rating="3.5")
+    return render_template("results.html", books=books, rating="3.5", search=search)
 
 
-@app.route("/book")
-def book():
-    return render_template("book.html")
+@app.route("/book/<string:isbn>")
+def book(isbn):
+    book = db.execute("SELECT * FROM books1 WHERE isbn = :isbn", {"isbn": isbn}).fetchone()
+    return render_template("book.html", book=book)

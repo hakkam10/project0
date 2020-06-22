@@ -1,18 +1,21 @@
 {% extends "layout2.html" %}
 
-{% block title %}{% endblock %}
+{% block title %}Search results for {{ search }}{% endblock %}
 
 {% block body %}
 <h3>Results</h3>
 <table class="table">
-  {% for book in book1 %}
+  {% for book in books %}
   <tr>
-    <a href="{{ url_for(book), isbn=isbn }}"></a>
       <td>
-        <h4>{{ name }}</h4>
-        <p style="padding: 0px;">{{ books1.author }} <span>&#10072;</span> ISBN - {{ books1.isbn }} <span>&#10072;</span> <span>&#9733;</span>{{ books2.rating }}</p>
+        <a href="{{ url_for('book', isbn=book.isbn)}}">
+          <h4>{{ book.title }}</h4>
+        </a>
+          <p style="padding: 0px;">{{ book.author }} <span>&#10072;</span> ISBN - {{ book.isbn }} <span>&#10072;</span> <span>&#9733;</span>{{ rating }}</p>
       </td>
   </tr>
+  {% else %}
+  <h4>Sorry, no results matching your search</h4>
   {% endfor %}
 </table>
 {% endblock %}
