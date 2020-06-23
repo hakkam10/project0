@@ -1,4 +1,4 @@
-import os
+import os, requests
 
 from flask import Flask, render_template, request, session, url_for
 from flask_session import Session
@@ -66,11 +66,20 @@ def results():
     search = "%" + request.form.get("search") + "%"
     # get search keywords
     books = db.execute("SELECT * FROM books1 WHERE (isbn ILIKE :search OR title ILIKE :search OR author ILIKE :search)", {"search": search}).fetchall()
+    for book in books:
+        isbn = book.isbn
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "3rPbVPJrIXkzd5UMgDQnHw", "isbns": isbn})
+    data = res.json()
+    ratings = data["books"][0]["average_rating"]
 
-    return render_template("results.html", books=books, rating="3.5", search=search)
+    return render_template("results.html", books=books, rating=ratings, search=search)
 
 
 @app.route("/book/<string:isbn>")
 def book(isbn):
     book = db.execute("SELECT * FROM books1 WHERE isbn = :isbn", {"isbn": isbn}).fetchone()
-    return render_template("book.html", book=book)
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "3rPbVPJrIXkzd5UMgDQnHw", "isbns": isbn})
+    data = res.json()
+    ratings = data["books"][0]["average_rating"]
+    work_ratings = data["books"][0]["work_ratings_count"]
+    return render_template("book.html", book=book, ratings=ratings, work_ratings=work_ratings, reviewstars="", reviewtext="")

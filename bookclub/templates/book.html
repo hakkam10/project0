@@ -10,12 +10,12 @@
 <h6>ISBN: {{ book.isbn }}</h6>
 
 <h6 style="padding-top: 20px">Goodreads Rating:</h6>
-{ goodreads.average_rating } <span>&#8226;</span>
- { goodreads.work_ratings_count } ratings
+<span>&#9733;</span> {{ ratings }} <span>&#8226;</span>
+ {{ work_ratings }} people rated this book
 
-<h6 style="padding-top: 20px">Reviews:</h6>
-<p>{ average_rating } <span>&#8226;</span>
- { work_ratings_count } ratings</p>
+<h6 style="padding-top: 20px">Bookclub Reviews:</h6>
+<p><span>&#9733;</span> {{ reviewstars }} <span>&#8226;</span>
+ {{ reviewtext }} people rated this book</p>
 
 <form class="comment form-inline my-2 my-lg-0" action="#" method="post">
   <h6>Your Ratings:</h6>
@@ -36,7 +36,7 @@
 </form>
 
 <table class="table">
-{% for rating in ratings %}
+{% for review in reviews %}
 <tr>
 <td>
 <p><b>{ username }</b></p>
