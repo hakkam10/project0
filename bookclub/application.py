@@ -3,6 +3,7 @@ import os, requests
 from flask import Flask, render_template, request, session, url_for
 from flask_session import Session
 from sqlalchemy import create_engine
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 app = Flask(__name__)
@@ -82,4 +83,39 @@ def book(isbn):
     data = res.json()
     ratings = data["books"][0]["average_rating"]
     work_ratings = data["books"][0]["work_ratings_count"]
-    return render_template("book.html", book=book, ratings=ratings, work_ratings=work_ratings, reviewstars="", reviewtext="")
+    comments = db.execute("SELECT * FROM review WHERE isbn = :isbn", {"isbn": isbn})
+    return render_template("book.html", book=book, ratings=ratings, work_ratings=work_ratings, reviewstars="", reviewtext="", comments=comments)
+
+@app.route("/book/<string:isbn>/rating", methods=["POST"])
+def submitr(isbn):
+    book = db.execute("SELECT * FROM books1 WHERE isbn = :isbn", {"isbn": isbn}).fetchone()
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "3rPbVPJrIXkzd5UMgDQnHw", "isbns": isbn})
+    data = res.json()
+    ratings = data["books"][0]["average_rating"]
+    work_ratings = data["books"][0]["work_ratings_count"]
+    comments = db.execute("SELECT * FROM review WHERE isbn = :isbn", {"isbn": isbn})
+    try:
+        star = request.form.get("star")
+        db.execute("INSERT INTO rating (username, star, isbn) VALUES (:username, :star, :isbn)", {"username": session["username"], "star": star, "isbn": isbn})
+        db.commit()
+    except  IntegrityError as Error:
+        return render_template("book.html", book=book, ratings=ratings, comments=comments, work_ratings=work_ratings, reviewstars="", reviewtext="", messagecomment="", messagestar="You have already rated")
+
+    return render_template("book.html", book=book, ratings=ratings, comments=comments, work_ratings=work_ratings, reviewstars="", reviewtext="", messagestar="rating submitted", messagecomment="")
+
+@app.route("/book/<string:isbn>/review", methods=["POST"])
+def submitc(isbn):
+    book = db.execute("SELECT * FROM books1 WHERE isbn = :isbn", {"isbn": isbn}).fetchone()
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "3rPbVPJrIXkzd5UMgDQnHw", "isbns": isbn})
+    data = res.json()
+    ratings = data["books"][0]["average_rating"]
+    work_ratings = data["books"][0]["work_ratings_count"]
+    comments = db.execute("SELECT * FROM review WHERE isbn = :isbn", {"isbn": isbn})
+    try:
+        comment = request.form.get("comment")
+        db.execute("INSERT INTO review (username, comment, isbn) VALUES (:username, :comment, :isbn)", {"username": session["username"], "comment": comment, "isbn": isbn})
+        db.commit()
+    except  IntegrityError as Error:
+        return render_template("book.html", book=book, ratings=ratings, comments=comments, work_ratings=work_ratings, reviewstars="", reviewtext="", messagestar="", messagecomment="You have already submitted your review")
+
+    return render_template("book.html", book=book, ratings=ratings, comments=comments, work_ratings=work_ratings, reviewstars="", reviewtext="", messagestar="", messagecomment="review submitted")
