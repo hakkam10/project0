@@ -52,28 +52,25 @@ def search():
     # get login information
     username = request.form.get("username")
     password = request.form.get("password")
+    session["username"] = username
+    user = db.execute("SELECT * FROM users WHERE (username = :username) AND (password = :password)", {"username": username, "password": password}).fetchone()
+
     # invalid
     if db.execute("SELECT * FROM users WHERE (username = :username) AND (password = :password)", {"username": username, "password": password}).rowcount == 0:
         return render_template("error.html", message="Invalid username or password")
 
     #valid
-    user = db.execute("SELECT * FROM users WHERE (username = :username) AND (password = :password)", {"username": username, "password": password}).fetchone()
     if db.execute("SELECT * FROM users WHERE (username = :username) AND (password = :password)", {"username": username, "password": password}).rowcount == 1:
-        session["username"] = username
         return render_template("search.html", user=user)
 
 @app.route("/results", methods=["POST"])
 def results():
-    search = "%" + request.form.get("search") + "%"
+    query = request.form.get("search")
+    search = "%" + query + "%"
     # get search keywords
     books = db.execute("SELECT * FROM books1 WHERE (isbn ILIKE :search OR title ILIKE :search OR author ILIKE :search)", {"search": search}).fetchall()
-    for book in books:
-        isbn = book.isbn
-    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "3rPbVPJrIXkzd5UMgDQnHw", "isbns": isbn})
-    data = res.json()
-    ratings = data["books"][0]["average_rating"]
 
-    return render_template("results.html", books=books, rating=ratings, search=search)
+    return render_template("results.html", books=books, search=query)
 
 
 @app.route("/book/<string:isbn>")
@@ -83,8 +80,11 @@ def book(isbn):
     data = res.json()
     ratings = data["books"][0]["average_rating"]
     work_ratings = data["books"][0]["work_ratings_count"]
-    comments = db.execute("SELECT * FROM review WHERE isbn = :isbn", {"isbn": isbn})
-    return render_template("book.html", book=book, ratings=ratings, work_ratings=work_ratings, reviewstars="", reviewtext="", comments=comments)
+    comments = db.execute("SELECT * FROM review WHERE isbn = :isbn ORDER BY id DESC", {"isbn": isbn})
+    average = db.execute("SELECT ROUND(AVG(star), 2) FROM rating WHERE isbn = :isbn", {"isbn": isbn}).fetchall()
+    avg = average[0][0]
+    no_of_stars = db.execute("SELECT * FROM rating WHERE isbn = :isbn", {"isbn": isbn}).rowcount
+    return render_template("book.html", book=book, ratings=ratings, work_ratings=work_ratings, avgstars=avg, no_of_stars=no_of_stars, comments=comments)
 
 @app.route("/book/<string:isbn>/rating", methods=["POST"])
 def submitr(isbn):
@@ -93,7 +93,7 @@ def submitr(isbn):
     data = res.json()
     ratings = data["books"][0]["average_rating"]
     work_ratings = data["books"][0]["work_ratings_count"]
-    comments = db.execute("SELECT * FROM review WHERE isbn = :isbn", {"isbn": isbn})
+    comments = db.execute("SELECT * FROM review WHERE isbn = :isbn ORDER BY id DESC", {"isbn": isbn})
     try:
         star = request.form.get("star")
         db.execute("INSERT INTO rating (username, star, isbn) VALUES (:username, :star, :isbn)", {"username": session["username"], "star": star, "isbn": isbn})
@@ -110,7 +110,7 @@ def submitc(isbn):
     data = res.json()
     ratings = data["books"][0]["average_rating"]
     work_ratings = data["books"][0]["work_ratings_count"]
-    comments = db.execute("SELECT * FROM review WHERE isbn = :isbn", {"isbn": isbn})
+    comments = db.execute("SELECT * FROM review WHERE isbn = :isbn ORDER BY id DESC", {"isbn": isbn})
     try:
         comment = request.form.get("comment")
         db.execute("INSERT INTO review (username, comment, isbn) VALUES (:username, :comment, :isbn)", {"username": session["username"], "comment": comment, "isbn": isbn})
@@ -119,3 +119,12 @@ def submitc(isbn):
         return render_template("book.html", book=book, ratings=ratings, comments=comments, work_ratings=work_ratings, reviewstars="", reviewtext="", messagestar="", messagecomment="You have already submitted your review")
 
     return render_template("book.html", book=book, ratings=ratings, comments=comments, work_ratings=work_ratings, reviewstars="", reviewtext="", messagestar="", messagecomment="review submitted")
+
+@app.route("/home", methods=["POST", "GET"])
+def home():
+    try:
+        username = session["username"]
+        user = db.execute("SELECT * FROM users WHERE username = :username", {"username": username}).fetchone()
+        return render_template("search.html", user=user)
+    except NameError:
+        return render_template("error.html", message="Login to continue")
