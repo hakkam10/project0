@@ -1,0 +1,29 @@
+{% extends "layout1.html" %}
+
+{% block title %}
+    Error
+{% endblock %}
+
+{% block body %}
+    <div class="container p-3 my-3">
+      <h1>Error</h1>
+      {{ message }}
+    <div id="login" class="col-md-4 offset-md-4 rounded ">
+
+      <h3>Try Again</h3>
+
+        <form action="{{ url_for('search') }}" method="post">
+
+            <input class="form-control my-3" type="text" name="username" placeholder="Username">
+
+            <input class="form-control my-3" type="password" name="password" placeholder="Password">
+
+            <button type="submit" class="btn btn-danger">Login</button>
+
+        </form>
+
+    </div>
+
+    </div>
+
+{% endblock %}

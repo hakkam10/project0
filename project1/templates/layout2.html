@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/stylesheet1.css') }}">
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/stylesheet2.css') }}">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </head>
+    <body>
+      <div id="heading">
+        <div class="container text-white">
+          <div class="row">
+            <div class="col-sm-6">
+              <a id="head" class="nav-link" href="{{ url_for('home') }}"><h1 class="text-white">Books Club</h1></a>
+            </div>
+            <div id="subhead" class="col-sm-6">
+              <h4>Decide your next book to read</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav class="navbar justify-content-between">
+        <div class="container">
+              <form class="form-inline p-0 my-lg-0" action="{{ url_for('results') }}" method="post" id="search">
+                <input id="search" class="form-control mr-3" name="search" type="search" placeholder="Search by Book title, Author or ISBN" aria-label="Search">
+                <button class="btn btn-danger my-2 my-sm-0 " type="submit">Search</button>
+              </form>
+        <a href="{{ url_for('index') }}"><button class="btn btn-danger my-2 my-sm-0" type="submit">Logout</button></a>
+      </div>
+      </nav>
+      <div id="body">
+        <div class="container p-3 my-3">
+          {% block body %}
+          {% endblock %}
+        </div>
+      </div>
+      <div id="script">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="js/addons/rating.js"></script>
+      </div>
+    </body>
+</html>

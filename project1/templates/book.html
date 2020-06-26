@@ -1,0 +1,57 @@
+{% extends "layout2.html" %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block body %}
+<h2 style="font-size: 50px; color: #dc3545;">{{ book.title }}</h2>
+
+<h5 style="font-size: 20px;">By {{ book.author }}</h5>
+<h6>Year puplished: {{ book.year }}</h6>
+<h6>ISBN: {{ book.isbn }}</h6>
+
+<h6 style="padding-top: 20px"><img src="https://s.gr-assets.com/assets/icons/goodreads_icon_16x16-fc141070fc3ea1a7cd145a4af570ec14.png" alt=""> Goodreads Rating:</h6>
+<span>&#9733;</span> {{ ratings }} <span>&#8226;</span>
+ {{ work_ratings }} people rated this book
+
+<h6 style="padding-top: 20px">Booksclub Reviews:</h6>
+<p><span>&#9733;</span> {{ avgstars }} <span>&#8226;</span>
+ {{ no_of_rating }} people rated this book</p>
+
+<form class="comment form-inline my-2 my-lg-0" action="{{ url_for( 'submitr', isbn=book.isbn) }}" method="post">
+  <h6>Your Ratings:</h6>
+  <div class="rate">
+      <input type="radio" id="star5" name="star" value="5" />
+      <label for="star5" title="text"></label>
+      <input type="radio" id="star4" name="star" value="4" />
+      <label for="star4" title="text"></label>
+      <input type="radio" id="star3" name="star" value="3" />
+      <label for="star3" title="text"></label>
+      <input type="radio" id="star2" name="star" value="2" />
+      <label for="star2" title="text"></label>
+      <input type="radio" id="star1" name="star" value="1" />
+      <label for="star1" title="text"></label>
+    </div>
+    <button class="btn btn-danger my-3" type="submit" name="button">Submit</button>
+</form>
+<p>
+  {{ messagestar }}
+</p>
+
+<form class="comment form-inline my-2 my-lg-0" action="{{ url_for( 'submitr', isbn=book.isbn) }}" method="post">
+  <input type="text" class="form-control my-3 mr-3" style="width: 75%" name="comment" value="" placeholder="Write your review">
+  <button class="btn btn-danger my-3" type="submit" name="button">Submit</button>
+</form>
+<p>
+  {{ messagecomment }}
+</p>
+<h6>Comments</h6>
+<table class="table">
+{% for comment in comments %}
+<tr>
+<td>
+<p><b>{{ comment.username }}</b></p>
+<p>{{ comment.comment }}</p>
+</td>
+</tr>
+{% endfor %}
+{% endblock %}
